@@ -7,9 +7,9 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Editor } from "./Editor";
 import Loader from "./Loader";
 
-function CollaborativeRoom() {
+function CollaborativeRoom({ id }: { id: string }) {
   return (
-    <RoomProvider id="my-room">
+    <RoomProvider id={id}>
       <ClientSideSuspense fallback={<Loader />}>
         <div className="collaborative-room">
           <Header>

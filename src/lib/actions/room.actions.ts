@@ -1,5 +1,8 @@
+"use server";
+
 import { nanoid } from "nanoid";
 import { liveblocks } from "../liveblock";
+import { revalidatePath } from "next/cache";
 
 export const createDocument = async ({
   userId,
@@ -13,15 +16,18 @@ export const createDocument = async ({
       title: "Untitled",
     };
 
-    const room = await liveblocks.createRoom("my-room-id", {
-      defaultAccesses: ["room:read", "room:presence:write"],
-      groupsAccesses: {
-        "my-group-id": ["room:write"],
-      },
-      usersAccesses: {
-        "my-user-id": ["room:write"],
-      },
+    const usersAccesses: RoomAccesses = {
+      [email]: ["room:write"],
+    };
+
+    const room = await liveblocks.createRoom(roomId, {
+      metadata,
+      usersAccesses,
+      defaultAccesses: [],
     });
+
+    revalidatePath("/");
+    return JSON.stringify(room);
   } catch (error) {
     console.log(`Error happened while creating a room: ${error}`);
   }

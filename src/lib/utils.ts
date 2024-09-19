@@ -94,3 +94,7 @@ export function getUserColor(userId: string) {
   const colorIndex = sum % brightColors.length;
   return brightColors[colorIndex];
 }
+
+export function getAccessUserPermission(user: any) {
+  return user;
+}

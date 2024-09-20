@@ -4,7 +4,7 @@ import React from "react";
 
 function ActiveCollaborators() {
   const others = useOthers();
-  console.log("All collaborators list ", others);
+  // console.log("All collaborators list ", others);
   const allCollaborators = others.map((coll) => coll.info);
 
   return (

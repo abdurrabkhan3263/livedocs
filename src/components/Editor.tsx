@@ -9,14 +9,22 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
+import { liveblocksConfig } from "@liveblocks/react-lexical";
 import React from "react";
+import DeleteDocument from "./DeleteDocument";
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
 }
 
-export function Editor() {
-  const initialConfig = {
+export function Editor({
+  roomId,
+  currentUserType,
+}: {
+  roomId: string;
+  currentUserType: UserType;
+}) {
+  const initialConfig = liveblocksConfig({
     namespace: "Editor",
     nodes: [HeadingNode],
     onError: (error: Error) => {
@@ -24,12 +32,16 @@ export function Editor() {
       throw error;
     },
     theme: Theme,
-  };
+    editable: currentUserType === "editor" ? true : false,
+  });
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <div className="editor-container size-full">
-        <ToolbarPlugin />
+        <div className="toolbar-wrapper flex min-w-full justify-between">
+          <ToolbarPlugin />
+          {currentUserType === "editor" && <DeleteDocument roomId={roomId} />}
+        </div>
 
         <div className="editor-inner h-[1100px]">
           <RichTextPlugin

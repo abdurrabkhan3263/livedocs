@@ -44,8 +44,6 @@ export const getDocument = async ({
   try {
     const room = await liveblocks.getRoom(roomId);
 
-    console.log("Room  by id is:- ", room);
-
     const hasAccess = Object.keys(room.usersAccesses).includes(userId);
 
     if (!hasAccess) {

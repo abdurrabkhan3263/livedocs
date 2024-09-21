@@ -6,27 +6,28 @@ import {
   LiveblocksProvider,
 } from "@liveblocks/react/suspense";
 import Loader from "@/components/Loader";
-import { getClerkUsers } from "@/lib/actions/user.actions";
+import { getClerkUsers, getDocumentUsers } from "@/lib/actions/user.actions";
 import { useUser } from "@clerk/nextjs";
 
 function Provider({ children }: { children: ReactNode }) {
   const { user: clerkUser } = useUser();
-  console.log("All Users are:- ", clerkUser);
 
   return (
     <LiveblocksProvider
       authEndpoint={"/api/liveblocks-auth"}
       resolveUsers={async ({ userIds }) => {
-        const users = await getClerkUsers(userIds);
+        const users = await getClerkUsers({ userIds });
+        console.log("Clerk User:- ", users);
         return users;
       }}
       resolveMentionSuggestions={async ({ text, roomId }) => {
+        console.log(`Room users is:- ${roomId}`);
         const roomUsers = await getDocumentUsers({
           roomId,
-          currentUser: clerkUser?.emailAddresses[0].emailAddress!,
+          currentUser:
+            (clerkUser && clerkUser?.emailAddresses[0].emailAddress) ?? "",
           text,
         });
-
         return roomUsers;
       }}
     >

@@ -8,20 +8,19 @@ import React from "react";
 async function Documents({ params: { id } }: SearchParamProps) {
   const clerkUser = await currentUser();
 
+  if (!clerkUser) redirect("/sign-in");
+
   const room = await getDocument({
     roomId: id,
-    userId: clerkUser?.emailAddresses[0].emailAddress as string,
+    userId: clerkUser.emailAddresses[0].emailAddress,
   });
 
   if (!room) {
     redirect("/");
   }
 
-  console.log("Rooms are ", room);
-
   const userIds = Object.keys(room.usersAccesses);
   const users = await getClerkUsers({ userIds });
-  // Todo: Access the permission of the user to access the document
 
   const usersData = users.map((user: User) => ({
     ...user,

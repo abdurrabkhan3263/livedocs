@@ -4,7 +4,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import AddDocumentBtn from "@/components/ui/AddDocumentBtn";
-import { liveblocks } from "@/lib/liveblock";
 import { getDocuments } from "@/lib/actions/room.actions";
 import ListDocuments from "@/components/ListDocuments";
 

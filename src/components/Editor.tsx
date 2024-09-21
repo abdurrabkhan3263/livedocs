@@ -21,6 +21,7 @@ import DeleteDocument from "./DeleteDocument";
 import Loader from "./Loader";
 import FloatingToolbar from "./plugins/FloatingToolBar";
 import { useThreads } from "@liveblocks/react/suspense";
+import Comments from "./Comments";
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -33,8 +34,7 @@ export function Editor({
   roomId: string;
   currentUserType: UserType;
 }) {
-  // const status = useEditorStatus();
-  const status = "fs";
+  const status = useEditorStatus();
   const { threads } = useThreads();
 
   const initialConfig = liveblocksConfig({
@@ -45,7 +45,7 @@ export function Editor({
       throw error;
     },
     theme: Theme,
-    editable: currentUserType === "editor" ? true : false,
+    editable: currentUserType === "editor",
   });
 
   return (
@@ -53,10 +53,10 @@ export function Editor({
       <div className="editor-container size-full">
         <div className="toolbar-wrapper flex min-w-full justify-between">
           <ToolbarPlugin />
-          {currentUserType === "editor" && <DeleteDocument roomId={roomId} />}
+          {/* {currentUserType === "editor" && <DeleteDocument roomId={roomId} />} */}
         </div>
 
-        <div className="editor-wrapper flex flex-col items-center justify-center">
+        <div className="editor-wrapper flex flex-col items-center justify-start">
           {status === "not-loaded" || status === "loading" ? (
             <Loader />
           ) : (
@@ -77,6 +77,7 @@ export function Editor({
           <LiveblocksPlugin>
             <FloatingComposer className="w-[350px]" />
             <FloatingThreads threads={threads} />
+            <Comments />
           </LiveblocksPlugin>
         </div>
       </div>

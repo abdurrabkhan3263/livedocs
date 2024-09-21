@@ -4,12 +4,12 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export async function POST() {
-  const clearUser = await currentUser();
+  const clerkUser = await currentUser();
 
-  if (!clearUser) {
+  if (!clerkUser) {
     redirect("/sign-in");
   }
-  const { id, firstName, lastName, emailAddresses, imageUrl } = clearUser;
+  const { id, firstName, lastName, emailAddresses, imageUrl } = clerkUser;
   // Get the current user from your database
   const user = {
     id: id,

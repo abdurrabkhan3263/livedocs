@@ -27,11 +27,11 @@ function CollaborativeRoom({
   const handleUpdateTitle = async (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    console.log(e.key);
     if (e.key === "Enter") {
       try {
         if (roomMetadata.title !== documentTitle) {
           setLoading(true);
+
           const updateRes = await updateDocumentTitle(roomId, documentTitle);
 
           if (updateRes) {

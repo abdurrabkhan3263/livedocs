@@ -27,7 +27,7 @@ export default function RootLayout({
         variables: { colorPrimary: "#3371FF", fontSize: "16px" },
       }}
     >
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={`${inter.className} antialiased`}>
           <Provider>{children}</Provider>
         </body>

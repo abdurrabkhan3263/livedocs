@@ -21,7 +21,6 @@ function Provider({ children }: { children: ReactNode }) {
         return users;
       }}
       resolveMentionSuggestions={async ({ text, roomId }) => {
-        console.log(`Room users is:- ${roomId}`);
         const roomUsers = await getDocumentUsers({
           roomId,
           currentUser:

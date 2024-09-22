@@ -37,6 +37,8 @@ export function Editor({
   const status = useEditorStatus();
   const { threads } = useThreads();
 
+  console.log(`All threads are ${threads}`);
+
   const initialConfig = liveblocksConfig({
     namespace: "Editor",
     nodes: [HeadingNode],

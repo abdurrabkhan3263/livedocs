@@ -126,9 +126,6 @@ function CollaborativeRoom({
               {loading && <p className="text-sm text-gray-400">saving...</p>}
             </div>
             <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
-              {/* <div className="flex w-fit items-center justify-center gap-2">
-                <p className="document-title">Share</p>
-              </div> */}
               <ActiveCollaborators />
 
               <ShareModel

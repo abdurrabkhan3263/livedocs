@@ -37,8 +37,6 @@ export function Editor({
   const status = useEditorStatus();
   const { threads } = useThreads();
 
-  console.log(`All threads are ${threads}`);
-
   const initialConfig = liveblocksConfig({
     namespace: "Editor",
     nodes: [HeadingNode],
@@ -55,7 +53,7 @@ export function Editor({
       <div className="editor-container size-full">
         <div className="toolbar-wrapper flex min-w-full justify-between">
           <ToolbarPlugin />
-          {/* {currentUserType === "editor" && <DeleteDocument roomId={roomId} />} */}
+          {currentUserType === "editor" && <DeleteDocument roomId={roomId} />}
         </div>
 
         <div className="editor-wrapper flex flex-col items-center justify-start">

@@ -32,9 +32,6 @@ function UserTypeSelector({
         <SelectItem value="editor" className="shad-select-item">
           can edit
         </SelectItem>
-        <SelectItem value="creator" className="shad-select-item">
-          can view
-        </SelectItem>
       </SelectContent>
     </Select>
   );

@@ -49,7 +49,6 @@ export const getDocumentUsers = async ({
       const filteredUsers = users.filter((email: string) =>
         email.toLowerCase().includes(lowerCaseText)
       );
-      console.log("Filtered Data are:- ", filteredUsers);
       return parseStringify(filteredUsers);
     }
 

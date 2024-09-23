@@ -1,20 +1,53 @@
+"use client";
+
 import Header from "@/components/Header";
-import { SignedIn, UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import AddDocumentBtn from "@/components/ui/AddDocumentBtn";
 import { getDocuments } from "@/lib/actions/room.actions";
 import ListDocuments from "@/components/ListDocuments";
 import Notification from "@/components/Notification";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
 
 export default async function Home() {
-  const clerkUser = await currentUser();
-  if (!clerkUser) redirect("/sign-in");
+  const { user: clerkUser, isLoaded } = useUser();
+  const [loading, setLoading] = useState(true);
+  const [documents, setDocuments] = useState([]);
+  const router = useRouter();
 
-  const { data: documents = [] } = await getDocuments(
-    clerkUser.emailAddresses[0].emailAddress
-  );
+  useEffect(() => {
+    if (isLoaded && !clerkUser) {
+      redirect("/sign-in");
+    } else {
+      fetchDocuments();
+    }
+  }, [clerkUser, isLoaded, router]);
+
+  const fetchDocuments = async () => {
+    if (clerkUser) {
+      try {
+        const { data } = await getDocuments(
+          clerkUser.emailAddresses[0].emailAddress
+        );
+        setDocuments(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <main className="home-container">
@@ -26,25 +59,28 @@ export default async function Home() {
           </SignedIn>
         </div>
       </Header>
-      {documents?.length > 0 ? (
+      {Array.isArray(documents) && documents?.length > 0 ? (
         <div className="document-list-container">
           <div className="document-list-title">
             <h2>All Documents</h2>
-            <AddDocumentBtn
-              userId={clerkUser.id}
-              email={clerkUser.emailAddresses[0].emailAddress}
-            />
+            {clerkUser && (
+              <AddDocumentBtn
+                userId={clerkUser?.id}
+                email={clerkUser.emailAddresses[0].emailAddress}
+              />
+            )}
           </div>
           <ul className="document-ul">
-            {documents.map(({ id, metadata, createdAt }: any) => (
-              <li key={id} className="document-list-item">
-                <ListDocuments
-                  id={id}
-                  title={metadata.title}
-                  createdAt={createdAt}
-                />
-              </li>
-            ))}
+            {Array.isArray(documents) &&
+              documents.map(({ id, metadata, createdAt }: any) => (
+                <li key={id} className="document-list-item">
+                  <ListDocuments
+                    id={id}
+                    title={metadata.title}
+                    createdAt={createdAt}
+                  />
+                </li>
+              ))}
           </ul>
         </div>
       ) : (
@@ -56,10 +92,12 @@ export default async function Home() {
             height={30}
             className="mx-auto"
           />
-          <AddDocumentBtn
-            userId={clerkUser.id}
-            email={clerkUser.emailAddresses[0].emailAddress}
-          />
+          {clerkUser && (
+            <AddDocumentBtn
+              userId={clerkUser?.id}
+              email={clerkUser.emailAddresses[0].emailAddress}
+            />
+          )}
         </div>
       )}
     </main>

@@ -48,12 +48,13 @@ function CollaborativeRoom({
   };
 
   useEffect(() => {
-    const handleClickOutSide = async (e: MouseEvent) => {
+    const handleClickOutside = async (e: MouseEvent) => {
       if (
         containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
+        !containerRef.current.contains(e.target as Node) &&
+        isActive
       ) {
-        if (roomMetadata.title !== documentTitle) {
+        if (documentTitle !== roomMetadata.title) {
           try {
             setLoading(true);
             await updateDocumentTitle(roomId, documentTitle);
@@ -62,19 +63,19 @@ function CollaborativeRoom({
               `Something went wrong while updating the title ${error}`
             );
           } finally {
-            setIsActive(false);
             setLoading(false);
           }
         }
+        setIsActive(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutSide);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutSide);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [roomId, documentTitle]);
+  }, [roomId, documentTitle, isActive, roomMetadata.title]);
 
   useEffect(() => {
     if (inputRef.current && isActive) {

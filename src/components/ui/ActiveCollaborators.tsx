@@ -7,7 +7,10 @@ function ActiveCollaborators() {
   const allCollaborators = others.map((coll) => coll.info);
 
   return (
-    <ul>
+    <ul
+      className="flex
+    "
+    >
       {allCollaborators.map(({ id, avatar, name, color }) => (
         <li key={id}>
           <Image

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import DeleteDocument from "./DeleteDocument";
+import ActiveRoomUser from "./ActiveRoomUser";
 
 export default function ListDocuments({
   id,
@@ -34,6 +35,7 @@ export default function ListDocuments({
           </p>
         </div>
       </Link>
+      <ActiveRoomUser roomId={id} />
       <DeleteDocument roomId={id} />
     </>
   );

@@ -6,6 +6,7 @@ import Image from "next/image";
 import AddDocumentBtn from "@/components/ui/AddDocumentBtn";
 import { getDocuments } from "@/lib/actions/room.actions";
 import ListDocuments from "@/components/ListDocuments";
+import Notification from "@/components/Notification";
 
 export default async function Home() {
   const clerkUser = await currentUser();
@@ -19,18 +20,7 @@ export default async function Home() {
     <main className="home-container">
       <Header className="sticky left-0 top-0">
         <div className="w-fit flex gap-5 items-center">
-          <Image
-            src={"/assets/icons/bell.svg"}
-            width={24}
-            height={24}
-            alt="search"
-          />
-          <Image
-            src={"/assets/icons/bell.svg"}
-            width={24}
-            height={24}
-            alt="search"
-          />
+          <Notification />
           <SignedIn>
             <UserButton />
           </SignedIn>

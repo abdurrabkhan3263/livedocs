@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   Popover,
   PopoverContent,
@@ -35,9 +35,7 @@ function Notification() {
           width={24}
         />
         {count > 0 && (
-          <div className="absolute right-2 top-2 z-20 size-2 rounded-full bg-blue-500">
-            {count}
-          </div>
+          <div className="absolute right-2 top-2 z-20 size-2 rounded-full bg-blue-500"></div>
         )}
       </PopoverTrigger>
       <PopoverContent align="end" className="shad-popover">
@@ -60,12 +58,21 @@ function Notification() {
                   key={notifi.id}
                   inboxNotification={notifi}
                   className="bg-dark-200 text-white"
-                  href={`/documents/${notifi.id}`}
+                  href={`/documents/${notifi.roomId}`}
                   showActions={false}
                   kinds={{
-                    thread: (props) => <InboxNotification.Thread {...props} />,
+                    thread: (props) => (
+                      <InboxNotification.Thread
+                        {...props}
+                        showActions={false}
+                        showRoomName={false}
+                      />
+                    ),
                     textMention: (props) => (
-                      <InboxNotification.TextMention {...props} />
+                      <InboxNotification.TextMention
+                        {...props}
+                        showRoomName={false}
+                      />
                     ),
                     $documentAccess: (props) => (
                       <InboxNotification.Custom

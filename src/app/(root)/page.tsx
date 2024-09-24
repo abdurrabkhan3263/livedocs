@@ -61,12 +61,12 @@ export default async function Home() {
             height={30}
             className="mx-auto"
           />
-          {clerkUser && (
+          {
             <AddDocumentBtn
               userId={clerkUser?.id}
               email={clerkUser.emailAddresses[0].emailAddress}
             />
-          )}
+          }
         </div>
       )}
     </main>

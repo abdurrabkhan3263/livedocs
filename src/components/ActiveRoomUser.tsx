@@ -1,20 +1,12 @@
-"use client";
+// "use client";
 
 import { liveblocks } from "@/lib/liveblock";
 import Image from "next/image";
 import React, { useEffect } from "react";
 
-function ActiveRoomUser({ roomId }: { roomId: string }) {
-  const [activeUsers, setActiveUsers] = React.useState<User[]>([]);
-  useEffect(() => {
-    (async () => {
-      const { data } = await liveblocks.getActiveUsers(roomId);
-      if (data) {
-        const allActiveUser = data.map(({ info }) => info);
-        setActiveUsers(allActiveUser);
-      }
-    })();
-  }, []);
+async function ActiveRoomUser({ roomId }: { roomId: string }) {
+  const { data } = await liveblocks.getActiveUsers(roomId);
+  const activeUsers = data.map((user) => user.info);
 
   return (
     <ul>

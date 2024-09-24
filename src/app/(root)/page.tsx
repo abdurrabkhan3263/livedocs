@@ -1,53 +1,22 @@
-"use client";
-
 import Header from "@/components/Header";
-import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import AddDocumentBtn from "@/components/ui/AddDocumentBtn";
 import { getDocuments } from "@/lib/actions/room.actions";
 import ListDocuments from "@/components/ListDocuments";
 import Notification from "@/components/Notification";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Loader from "@/components/Loader";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
-  const { user: clerkUser, isLoaded } = useUser();
-  const [loading, setLoading] = useState(true);
-  const [documents, setDocuments] = useState([]);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (isLoaded && !clerkUser) {
-      redirect("/sign-in");
-    } else {
-      fetchDocuments();
-    }
-  }, [clerkUser, isLoaded, router]);
-
-  const fetchDocuments = async () => {
-    if (clerkUser) {
-      try {
-        const { data } = await getDocuments(
-          clerkUser.emailAddresses[0].emailAddress
-        );
-        setDocuments(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
-  if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+  const clerkUser = await currentUser();
+  if (!clerkUser) {
+    return redirect("/sign-in");
   }
+
+  const { data: documents } = await getDocuments(
+    clerkUser.emailAddresses[0].emailAddress
+  );
 
   return (
     <main className="home-container">
@@ -59,7 +28,7 @@ export default async function Home() {
           </SignedIn>
         </div>
       </Header>
-      {Array.isArray(documents) && documents?.length > 0 ? (
+      {documents?.length > 0 ? (
         <div className="document-list-container">
           <div className="document-list-title">
             <h2>All Documents</h2>

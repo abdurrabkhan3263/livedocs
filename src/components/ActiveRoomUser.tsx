@@ -1,3 +1,5 @@
+"use client";
+
 import { liveblocks } from "@/lib/liveblock";
 import Image from "next/image";
 import React, { useEffect } from "react";

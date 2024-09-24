@@ -15,10 +15,12 @@ function Provider({ children }: { children: ReactNode }) {
   return (
     <LiveblocksProvider
       authEndpoint={"/api/liveblocks-auth"}
+      // Comment store only user id you have to resolve it and send information of user like email,name,avatar etc
       resolveUsers={async ({ userIds }) => {
         const users = await getClerkUsers({ userIds });
         return users;
       }}
+      // Live comment you have to resolve mention suggestions
       resolveMentionSuggestions={async ({ text, roomId }) => {
         const roomUsers = await getDocumentUsers({
           roomId,
